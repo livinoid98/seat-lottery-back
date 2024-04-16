@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="inno.server.sw1.seatlottery.mapper.SeatMapper">
+    <select id="getCount" resultType="int">
+        select count(*)
+        from members
+        where choice != '';
+    </select>
+
+    <update id="updateChoiceMember" parameterType="Map">
+        update members
+        set choice = #{choiceMember}
+        where member = #{me};
+    </update>
+
+    <select id="getMemberTable">
+        select member, choice
+        from members;
+    </select>
+
+    <update id="resetPolls">
+        update members
+        set choice = '';
+    </update>
+</mapper>
