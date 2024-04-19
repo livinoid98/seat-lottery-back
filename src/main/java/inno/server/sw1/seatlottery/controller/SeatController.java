@@ -35,7 +35,7 @@ public class SeatController {
     @GetMapping("/shuffle")
     public String[] shuffleSeat() {
 
-        String[] members = {"김예지","김원건","김은혜","김현범","박병윤","박상직","박수향","배용호","신용환","신윤정","신은욱","유성재","이혜정","장정호","최예진","최찬영"};
+        String[] members = {"김예지","김원건","김은혜","박수향","배용호","신윤정","신은욱","유성재","이혜정","장정호","최예진","최찬영"};
 
         List<Map<String, Object>> memberTable = service.getMemberTable();
         Map<String, Object> memberMap = new HashMap<>();
@@ -55,14 +55,21 @@ public class SeatController {
             int count = 0;
             int length = members.length;
             for(int j=0; j<length; j++) {
-                if(j-1 >= 0 && memberMap.get(members[j]) == members[j-1]) {
-                    count++;
-                }
-
-                if(j+1 < length && memberMap.get(members[j]) == members[j+1]) {
-                    count++;
+                if(j-1 >= 0 && j+1 < length) {
+                    for(int k=0; k<memberTable.size(); k++) {
+                        if(members[j].equals(memberTable.get(k).get("member"))) {
+                            if(members[j-1].equals(memberTable.get(k).get("choice"))) {
+                                count++;
+                            }
+                            if(members[j+1].equals(memberTable.get(k).get("choice"))) {
+                                count++;
+                            }
+                        }
+                    }
                 }
             }
+
+            log.info("count : " + count);
 
             if(count >= max) {
                 result = Arrays.copyOf(members, members.length);
